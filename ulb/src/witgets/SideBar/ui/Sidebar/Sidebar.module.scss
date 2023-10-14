@@ -1,0 +1,43 @@
+.Sidebar {
+    height: var(--empty-height);
+    width: var(--sidebar-width);
+    background-color: var(--inverted-bg-color);
+    position: relative;
+    transition: width 0.3s;
+}
+
+.collapsed {
+    width: var(--sidebar-width-collapsed);
+}
+
+.SideButton {
+    position: absolute;
+    width: var(--sidebar-button-with);
+    height: var(--sidebar-button-height);
+    top : calc(calc(100vh - var(--navbar-height)) / 2);
+    display: flex;
+    right: 0;
+    transition: left 0.3s;
+}
+
+.ButtonCollapsed {
+    position: absolute;
+    right: 0;
+}
+
+
+.switchers {
+    position: absolute;
+    top: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.switchersCollapsed {
+    display: block;
+}
+
+.lang {
+    margin-left: 20px;
+}

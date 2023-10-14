@@ -1,0 +1,4 @@
+.SideScroll {
+    position: relative;
+    height: calc(100vh - var(--navbar-height) - var(--control-panel-height) );
+}

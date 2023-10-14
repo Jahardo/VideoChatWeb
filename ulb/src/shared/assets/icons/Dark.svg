@@ -1,0 +1,19 @@
+<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_f_1_31)">
+<circle cx="15.5" cy="15.5" r="9" stroke="#E51F1F" stroke-width="2"/>
+</g>
+<g style="mix-blend-mode:color-burn">
+<circle cx="15.5" cy="15.5" r="10" stroke="#ECA53C"/>
+</g>
+<circle cx="15.5" cy="15.5" r="9.5" fill="#0F0D0D"/>
+<g style="mix-blend-mode:lighten">
+<circle cx="15.5" cy="15.5" r="9.9" stroke="#DE782D" stroke-width="0.2" stroke-miterlimit="16" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0.3 0.3"/>
+</g>
+<defs>
+<filter id="filter0_f_1_31" x="1.5" y="1.5" width="28" height="28" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur_1_31"/>
+</filter>
+</defs>
+</svg>

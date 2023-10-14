@@ -1,0 +1,17 @@
+.CameraButton {
+    border: solid 1px var(--inverted-secondary-color);
+    height: 22px;
+    width: 22px;
+}
+
+.CameraButtonPressed {
+    background-color: var(--button-disabled-color);
+}
+
+.iconOff {
+    color: var(--light);
+}
+
+.iconOn {
+    color: var(--inverted-secondary-color);
+}

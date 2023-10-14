@@ -1,0 +1,34 @@
+:root{
+    --video-block-height: 210px;
+    --video-block-width: 351px;
+    --avatar-size:calc(var(--video-block-height) * 0.7);
+
+    //  height: 540,
+    //  width: 324,
+}
+
+.cameraOff {
+    background-color: var(--dark);
+}
+
+.VideoCart {
+    border-radius: 4%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img {
+    position: relative;
+    border-radius: 50%;
+    object-fit: cover;
+    height: var(--avatar-size);
+    width: var(--avatar-size);
+}
+
+.name {
+    position: absolute;
+    bottom: 2%;
+    left: 2%;
+}

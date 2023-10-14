@@ -1,0 +1,24 @@
+.ButtonsPanel{
+    background-color: var(--light);
+    height: var(--control-panel-height);
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.content {
+    height: var(--control-panel-height);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:50px;
+}
+
+.btn {
+
+}
+
+.btnScale {
+    transform: scale(2);
+}

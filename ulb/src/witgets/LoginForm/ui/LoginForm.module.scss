@@ -1,0 +1,23 @@
+.LoginForm {
+    width: var(--login-form-width);
+    height: var(--login-form-height);
+    background-color: var(--dark);
+    padding: 30px;
+}
+
+.wrap {
+    padding-top: 20px;
+    display:flex;
+    flex-direction: column;
+}
+
+
+
+.btnAdditional {
+    margin-top: 20px;
+    width: 20%;
+}
+
+.createOrJoin {
+    display: flex;
+}

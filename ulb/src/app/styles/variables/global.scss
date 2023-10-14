@@ -1,0 +1,43 @@
+:root {
+    --font-family-main : consolas , "Times New Roman" , serif;
+    --font-size-m: 16px;
+    --font-line-m: 24px;
+    --font-m : var(--font-size-m) / var(--font-line-m) var(--font-family-main) ;
+    --font-size-l: 22px;
+    --font-line-l: 32px;
+    --font-l : var(--font-size-l) / var(--font-line-l) var(--font-family-main) ;
+
+    // size
+    --navbar-height: 50px;
+    --sidebar-width:300px;
+    --sidebar-width-collapsed: 80px;
+    --empty-height: calc(100vh - var(--navbar-height));
+
+    // sidebar Button
+    --sidebar-button-with:40px;
+    --sidebar-button-height:40px;
+
+    // sliders
+    --link: rgb(27 129 112);
+    --link-hover: rgb(24 94 82);
+
+    // LoginForm
+    --login-form-width : 500px;
+    --login-form-height: 420px;
+
+    // VideoSettingDropDown
+    --video-drop-down-width:400px;
+    --video-drop-down-height:70px;
+    --video-drop-down-height-collapsed:600px;
+
+    // MeetControlPanel
+    --control-panel-height:100px;
+
+    // main colors
+    --light: rgb(216 219 224 / 98%);
+    --dark: #28292c;
+    --button-disabled-color: #e66465;
+
+    
+}
+
