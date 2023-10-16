@@ -10,8 +10,6 @@ export const getLocalVideoStream = async () => {
             height: 720,
         },
     });
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    console.log(devices);
     return {
         localMediaStream,
     };

@@ -1,15 +1,22 @@
 import { ClassNames } from 'shared/lib/ClassNames';
 import cls from 'pages/RoomPage/ui/Room.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SideScroll } from 'shared/ui/SideScroll';
 import { VideoCart } from 'features/VideoCart';
+import { socket } from 'shared/lib/socket';
 
 interface PanelProps {
     className?: string
 }
 
 const Panel = ({ className }:PanelProps) => {
-    const clients = [1, 2, 3, 4, 5, 6, 7, 8];
+    const [clients, setClients] = useState([]);
+    useEffect(() => {
+        socket.on('UsersInRoom', (users) => {
+            console.log('inroom');
+            console.log(users);
+        });
+    }, []);
     const [isMain, setIsMain] = useState(true);
     const mainClient = 1;
     if (isMain) {

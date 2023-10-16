@@ -21,3 +21,7 @@
 .createOrJoin {
     display: flex;
 }
+
+.InputError {
+    border: solid 3px var(--button-disabled-color);
+}

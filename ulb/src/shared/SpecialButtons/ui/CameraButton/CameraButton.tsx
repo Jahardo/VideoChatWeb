@@ -1,8 +1,9 @@
 import { ClassNames } from 'shared/lib/ClassNames';
-import React, { useState } from 'react';
 import { Button, ThemeButton } from 'shared/ui/Button';
 import VideoCamera from 'shared/assets/icons/VideoCamera.svg';
 import VideoCameraSlash from 'shared/assets/icons/VideoCameraSlash.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCameraValue, VideoSettingsActions } from 'entities/VideoSettings';
 import cls from './CameraButton.module.scss';
 
 interface CameraButtonProps {
@@ -10,9 +11,10 @@ interface CameraButtonProps {
 }
 
 export const CameraButton = ({ className }:CameraButtonProps) => {
-    const [isCamera, setIsCamera] = useState(false);
+    const dispatch = useDispatch();
+    const isCamera = useSelector(getCameraValue);
     const handleButtonCameraPress = () => {
-        setIsCamera((prevState) => !prevState);
+        dispatch(VideoSettingsActions.turnCamera());
     };
     return (
         <Button

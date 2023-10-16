@@ -4,9 +4,7 @@ import { ACTIONS, socket } from 'shared/lib/socket';
 import { useEffect, useState } from 'react';
 import { PreEnterMenu } from 'shared/ui/PreEnterMenu/ui/PreEnterMenu';
 import { useDispatch, useSelector } from 'react-redux';
-import { joinAction } from 'entities/Join';
-import { getJoinValue } from 'entities/Join/model/selectors/getJoinValue/getJoinValue';
-import { Button } from 'shared/ui/Button';
+import { getJoinValue, joinAction } from 'entities/Join';
 import { useParams } from 'react-router-dom';
 import { getLocalVideoStream } from 'pages/RoomPage/ui/Streams/getLocalVideoStream';
 import cls from './Room.module.scss';
@@ -20,30 +18,16 @@ const Room = ({ className }:RoomProps) => {
     const roomId = useParams();
     const getLocalVideo = getLocalVideoStream();
     useEffect(() => {
-        socket.on('NotExistRoom', () => {
-            setExist(false);
+        socket.emit(ACTIONS.JOIN, {
+            roomId: roomId.id,
         });
-    }, []);
-    useEffect(() => {
-        socket.on('StartPrepareCamera', async () => {
-        });
-    }, []);
-
-    useEffect(() => {
-        socket.emit('shareRoomId', {
-            roomId,
-        });
-        console.log(roomId);
+        console.log(roomId.id);
     }, []);
     const dispatch = useDispatch();
     const joined = useSelector(getJoinValue);
-    const join = () => {
-        dispatch(joinAction.change());
-    };
     if (joined) {
         return (
             <div className={cls.Room}>
-                {/* <Button type="button" onClick={join} /> */}
                 <Panel className={className} />
                 <ButtonsPanel />
             </div>
@@ -51,7 +35,6 @@ const Room = ({ className }:RoomProps) => {
     }
     return (
         <div>
-            {/* <Button type="button" onClick={join} /> */}
             {exist
                 ? <PreEnterMenu />
                 : <h1>Room don't exist</h1>}

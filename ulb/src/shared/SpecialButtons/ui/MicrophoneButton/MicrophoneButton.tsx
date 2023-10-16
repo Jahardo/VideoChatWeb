@@ -2,7 +2,8 @@ import { ClassNames } from 'shared/lib/ClassNames';
 import { Button, ThemeButton } from 'shared/ui/Button';
 import MicrophoneOn from 'shared/assets/icons/MicrophoneOn.svg';
 import MicrophoneOff from 'shared/assets/icons/MicrophoneOff.svg';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMicroValue, VideoSettingsActions } from 'entities/VideoSettings';
 import cls from './MicrophoneButton.module.scss';
 
 interface MicrophoneButtonProps {
@@ -10,9 +11,10 @@ interface MicrophoneButtonProps {
 }
 
 export const MicrophoneButton = ({ className }:MicrophoneButtonProps) => {
-    const [isMicro, setIsMicro] = useState(false);
+    const dispatch = useDispatch();
+    const isMicro = useSelector(getMicroValue);
     const handleButtonMicroPress = () => {
-        setIsMicro((prevState) => !prevState);
+        dispatch(VideoSettingsActions.turnMicro());
     };
     return (
         <Button
