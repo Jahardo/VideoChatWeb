@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { SideScroll } from 'shared/ui/SideScroll';
 import { VideoCart } from 'features/VideoCart';
 import { socket } from 'shared/lib/socket';
+import {useParams} from "react-router-dom";
 
 interface PanelProps {
     className?: string
@@ -11,11 +12,10 @@ interface PanelProps {
 
 const Panel = ({ className }:PanelProps) => {
     const [clients, setClients] = useState([]);
+    const roomId = useParams()
     useEffect(() => {
-        socket.on('UsersInRoom', (users) => {
-            console.log('inroom');
-            console.log(users);
-        });
+        console.log(roomId)
+        socket.emit('join-room',{{ roomId, userName }})
     }, []);
     const [isMain, setIsMain] = useState(true);
     const mainClient = 1;
