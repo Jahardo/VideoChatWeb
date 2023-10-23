@@ -1,28 +1,36 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+    useContext, useEffect, useRef, useState,
+} from 'react';
+import { RoomContext } from 'app/providers/RoomProvider';
 import cls from './GlobalVideo.module.scss';
 
 interface Props {
-    email: string;
-    stream: MediaStream;
     muted?: boolean;
+    client?:string;
 }
 
-export const GlobalVideo = ({ email, stream, muted }: Props) => {
+export const GlobalVideo = ({ muted, client }: Props) => {
     const ref = useRef<HTMLVideoElement>(null);
     const [isMuted, setIsMuted] = useState<boolean>(false);
+    const { provideMediaRef } = useContext(RoomContext);
 
-    useEffect(() => {
-        if (ref.current) ref.current.srcObject = stream;
-        if (muted) setIsMuted(muted);
-    }, [stream, muted]);
+    // useEffect(() => {
+    //     if (ref.current) ref.current.srcObject = stream;
+    //     if (muted) setIsMuted(muted);
+    // }, [stream, muted]);
 
     return (
         <div className={cls.Container}>
-            <video className={cls.VideoContainer} ref={ref} muted={isMuted} autoPlay />
+            <video
+                className={cls.VideoContainer}
+                ref={(instance) => provideMediaRef(client, instance)}
+                muted={isMuted}
+                autoPlay
+            />
             <div
                 className={cls.UserLabel}
             >
-                {email}
+                UserName
             </div>
         </div>
     );

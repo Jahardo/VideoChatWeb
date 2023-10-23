@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getJoinValue, joinAction } from 'entities/Join';
 import { useParams } from 'react-router-dom';
 import { getLocalVideoStream } from 'pages/RoomPage/ui/Streams/getLocalVideoStream';
+import { RoomProvider } from 'app/providers/RoomProvider';
 import cls from './Room.module.scss';
 
 interface RoomProps {
@@ -28,8 +29,10 @@ const Room = ({ className }:RoomProps) => {
     if (joined) {
         return (
             <div className={cls.Room}>
-                <Panel className={className} />
-                <ButtonsPanel />
+                <RoomProvider>
+                    <Panel className={className} />
+                    <ButtonsPanel />
+                </RoomProvider>
             </div>
         );
     }

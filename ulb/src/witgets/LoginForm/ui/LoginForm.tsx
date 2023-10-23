@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, ThemeButton } from 'shared/ui/Button';
 import { Input } from 'shared/ui/Input';
 import { InputTheme } from 'shared/ui/Input/ui/Input';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ClassNames } from 'shared/lib/ClassNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { getJoinValue, joinAction } from 'entities/Join';
@@ -14,7 +14,6 @@ import cls from './LoginForm.module.scss';
 interface LoginFormProps {
     className?: string
 }
-
 export const LoginForm = ({ className }:LoginFormProps) => {
     const { t } = useTranslation('main');
     const [name, setName] = useState<string>('');
@@ -23,6 +22,7 @@ export const LoginForm = ({ className }:LoginFormProps) => {
     const dispatch = useDispatch();
     const isMicro = useSelector(getMicroValue);
     const isCamera = useSelector(getCameraValue);
+    const roomId = useParams();
     const joinRoom = () => {
         if (name === '') {
             setEmpty(true);
@@ -31,7 +31,8 @@ export const LoginForm = ({ className }:LoginFormProps) => {
         setEmpty(false);
         dispatch(joinAction.change());
         socket.emit('pressJoin', {
-            name,
+            roomId: roomId.id,
+            userName: name,
             isMicro,
             isCamera,
         });

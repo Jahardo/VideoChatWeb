@@ -1,20 +1,36 @@
 import { ClassNames } from 'shared/lib/ClassNames';
-import { useState, VideoHTMLAttributes } from 'react';
+import { useContext, useState, VideoHTMLAttributes } from 'react';
 import { LocalVideo } from 'shared/ui/Video';
 import { useTranslation } from 'react-i18next';
+import { GlobalVideo } from 'pages/RoomPage/ui/Streams/GlobalVideo';
+import { RoomContext } from 'app/providers/RoomProvider';
+import { Video } from 'shared/ui/Video/ui/Video';
 import cls from './VideoCart.module.scss';
 
 interface VideoCartProps extends VideoHTMLAttributes<HTMLVideoElement>{
     className?: string
+    client?:string
 }
 
-export const VideoCart = ({ className, ...otherProps }:VideoCartProps) => {
-    const [isCamera, setIsCamera] = useState(false);
+export const VideoCart = ({
+    className, client, ...otherProps
+}:VideoCartProps) => {
+    const [isCamera, setIsCamera] = useState(true);
     const { t } = useTranslation('room');
+    const { provideMediaRef } = useContext(RoomContext);
     return (
-        <div className={ClassNames(cls.VideoCart, { [cls.cameraOff]: !isCamera }, [className])}>
+        <div className={ClassNames(cls.VideoCart, { /* [cls.cameraOff]: !isCamera */ }, [className])}>
             {isCamera
-                ? <LocalVideo {...otherProps} />
+                ? (
+                    <video
+                        ref={(instance) => provideMediaRef(client, instance)}
+                        width="100%"
+                        height="100%"
+                        autoPlay
+                        playsInline
+                        muted
+                    />
+                ) /* <GlobalVideo muted={client === 'LOCAL_VIDEO'} client={client} /> */
                 : (
                     <img
                         className={cls.img}
@@ -23,7 +39,11 @@ export const VideoCart = ({ className, ...otherProps }:VideoCartProps) => {
                         alt="fv"
                     />
                 )}
-            <div className={cls.name}>{t('User Name')}</div>
+            <div className={cls.name}>
+                {t('User Name')}
+                {' '}
+                {client}
+            </div>
         </div>
     );
 };

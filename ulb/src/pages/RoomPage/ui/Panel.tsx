@@ -1,23 +1,22 @@
 import { ClassNames } from 'shared/lib/ClassNames';
 import cls from 'pages/RoomPage/ui/Room.module.scss';
-import { useEffect, useState } from 'react';
+import {
+    useCallback, useContext, useEffect, useState,
+} from 'react';
 import { SideScroll } from 'shared/ui/SideScroll';
 import { VideoCart } from 'features/VideoCart';
 import { socket } from 'shared/lib/socket';
-import {useParams} from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import { RoomContext } from 'app/providers/RoomProvider';
+import { GlobalVideo } from 'pages/RoomPage/ui/Streams/GlobalVideo';
 
 interface PanelProps {
     className?: string
 }
 
 const Panel = ({ className }:PanelProps) => {
-    const [clients, setClients] = useState([]);
-    const roomId = useParams()
-    useEffect(() => {
-        console.log(roomId)
-        socket.emit('join-room',{{ roomId, userName }})
-    }, []);
-    const [isMain, setIsMain] = useState(true);
+    const { clients, provideMediaRef } = useContext(RoomContext);
+    const [isMain, setIsMain] = useState(false);
     const mainClient = 1;
     if (isMain) {
         return (
@@ -44,8 +43,10 @@ const Panel = ({ className }:PanelProps) => {
             {clients.map((client:any) => (
                 <div>
                     <VideoCart
+                        client={client}
                         key={client}
                     />
+                    {/* <video ref={(instance) => provideMediaRef(client, instance)} autoPlay muted={client === 'LOCAL_VIDEO'} /> */}
                 </div>
             ))}
         </div>
