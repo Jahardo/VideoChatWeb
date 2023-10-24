@@ -21,6 +21,8 @@ interface IUser {
     roomId: string
     userName: string;
     userId: string
+    isMicro:boolean,
+    isCamera:boolean,
 }
 
 interface RoomTo {
@@ -37,19 +39,18 @@ io.on('connection', socket => {
         if (!rooms[roomId]) {
             rooms[roomId] = {}
         }
-        rooms[roomId][socket.id] = {userName, roomId, userId: socket.id}
+        rooms[roomId][socket.id] = {userName, roomId, userId: socket.id,isMicro:true,isCamera:true}
         console.log(rooms)
     }
 
     const joinRoom = ({roomId}: RoomTo) => {
-        socket.join(roomId);
         console.log(`user - ${rooms[roomId][socket.id].userName}`);
 
         const users = rooms[roomId];
         Object.values(users).filter(user=>user.userId !==socket.id).forEach(user => {
             io.to(user.userId).emit("ADD_PEER", {
                 peerID: socket.id,
-                createOffer: false
+                createOffer: false,
             });
 
             socket.emit("ADD_PEER", {
@@ -57,7 +58,6 @@ io.on('connection', socket => {
                 createOffer: true,
             });
         });
-
         // if (!rooms[roomId]) rooms[roomId] = {};
         // console.log("user joined the room", roomId, userName);
         // rooms[roomId][socket.id] = { userName ,isMicro,isCamera};
@@ -68,7 +68,16 @@ io.on('connection', socket => {
         //     roomId,
         //     participants: rooms[roomId],
         // });
-
+        socket.join(roomId);
+        io.to(roomId).emit('shareUsers',users)
+        socket.on('MicroButton',({micro}:{micro:boolean})=>{
+            rooms[roomId][socket.id].isMicro = micro;
+            io.to(roomId).emit('shareUsers',rooms[roomId])
+        })
+        socket.on('CameraButton',({camera}:{camera:boolean})=>{
+            rooms[roomId][socket.id].isCamera = camera;
+            io.to(roomId).emit('shareUsers',rooms[roomId])
+        })
         socket.on("disconnect", () => {
             //console.log(`user ${rooms[roomId][socket.id].userName} left `)
             leaveRoom({roomId});

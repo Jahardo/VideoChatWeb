@@ -13,14 +13,23 @@ export const pcConfig = {
     ],
 };
 
+export type UserType = {
+    roomId: string
+    userId: string;
+    userName: string;
+    isMicro:boolean,
+    isCamera:boolean,
+};
+
 interface RoomValue {
     clients : any[],
     provideMediaRef: (id:string, node:HTMLVideoElement)=> void,
     // peerMediaElements : MutableRefObject<Record<string, any>>
-
+    users: Record<string, UserType>
 }
 export const RoomContext = createContext<RoomValue>({
     clients: [],
     provideMediaRef: null,
+    users: {},
     // peerMediaElements: null,
 });

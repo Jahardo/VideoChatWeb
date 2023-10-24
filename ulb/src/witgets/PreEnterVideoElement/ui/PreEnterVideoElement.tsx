@@ -21,7 +21,7 @@ export const PreEnterVideoElement = ({ className }:PreEnterVideoElementProps) =>
     const LOCAL_MEDIA = 'localMedia';
     return (
         <div className={ClassNames(cls.PreEnterVideoElement, {}, [className])}>
-            <LocalVideo nodes={LOCAL_MEDIA} className={cls.Video} />
+            <LocalVideo className={cls.Video} />
             <div className={cls.btnPositions}>
                 <CameraButton />
                 <MicrophoneButton />

@@ -1,49 +1,52 @@
 import React, {
-    ReactNode, useCallback, useEffect, useRef,
+    ReactNode, useCallback, useEffect, useRef, useState,
 } from 'react';
 import { useStateCallback } from 'pages/RoomPage/ui/hooks/useStateCallback';
 import { useParams } from 'react-router-dom';
 import { socket } from 'shared/lib/socket';
 import * as freeice from 'freeice';
-import { pcConfig, RoomContext } from '../lib/RoomContext';
+import { useSelector } from 'react-redux';
+import { getCameraValue, getMicroValue } from 'entities/VideoSettings';
+import { pcConfig, RoomContext, UserType } from '../lib/RoomContext';
 
 interface RoomProviderProps {
     children:ReactNode,
 }
-
-export type WebRTCUser = {
-    userId: string;
-    userName: string;
-    stream: MediaStream;
-};
 
 export const LOCAL_VIDEO = 'LOCAL_VIDEO';
 
 export const RoomProvider = ({ children }:RoomProviderProps) => {
     const [clients, updateClients] = useStateCallback<string[]>([]);
     const roomId = useParams();
+    const isCamera = useSelector(getCameraValue);
+    const isMicro = useSelector(getMicroValue);
 
-    const addNewClient = useCallback((newClient:any, cb:any) => {
-        if (!clients.includes(newClient)) {
-            // @ts-ignore
-            updateClients((prev) => [...prev, newClient], cb);
-        } else cb();
-        // const cl = () => {
-        //     if (!clients.includes(newClient)) {
-        //         return [...clients, newClient];
-        //     }
-        //     return clients;
-        // };
+    const addNewClient = useCallback((newClient:string, cb:any) => {
+        // @ts-ignore
+        updateClients((list) => {
+            if (!list.includes(newClient)) {
+                return [...list, newClient];
+            }
 
-        // console.log(clients);
+            return list;
+        }, cb);
     }, [clients, updateClients]);
 
     const peerConnections = useRef<Record<string, RTCPeerConnection>>({});
     const localMediaStream = useRef(null);
     const peerMediaElements = useRef<Record<string, any>>({
-        [LOCAL_VIDEO]: null,
+        [socket.id]: null,
     });
-    const startCapture = useCallback(async () => {
+    const [users, setUsers] = useState<Record<string, UserType>>({});
+
+    useEffect(() => {
+        socket.on('shareUsers', (users) => {
+            setUsers(users);
+            console.log(users);
+        });
+    }, []);
+
+    const startCapture = async () => {
         localMediaStream.current = await navigator.mediaDevices.getUserMedia({
             audio: true,
             video: {
@@ -51,23 +54,21 @@ export const RoomProvider = ({ children }:RoomProviderProps) => {
                 height: 720,
             },
         });
-        addNewClient(LOCAL_VIDEO, () => {
-            const localVideoElement = peerMediaElements.current[LOCAL_VIDEO];
+        addNewClient(socket.id, () => {
+            const localVideoElement = peerMediaElements.current[socket.id];
 
             if (localVideoElement) {
                 localVideoElement.volume = 0;
                 localVideoElement.srcObject = localMediaStream.current;
             }
         });
-        console.log(clients);
-    }, []);
+    };
     useEffect(() => {
         startCapture()
             .then(() => socket.emit('join-room', { roomId: roomId.id }))
             .catch((e) => console.error('Error getting userMedia:', e));
         return () => {
-            // localMediaStream.current.getTracks().forEach((track) => track.stop());
-
+            localMediaStream.current.getTracks().forEach((track:MediaStreamTrack) => track.stop());
             socket.emit('LEAVE', { roomId: roomId.id });
         };
     }, [roomId.id]);
@@ -75,7 +76,7 @@ export const RoomProvider = ({ children }:RoomProviderProps) => {
     useEffect(() => {
         const handleNewPeer = async ({ peerID, createOffer }:{peerID:string, createOffer:boolean}) => {
             if (peerID in peerConnections.current) {
-                console.warn(`Already connected to peer ${peerID}`);
+                console.log(`Already connected to peer ${peerID}`);
             }
             // peerConnections.current[peerID] = new RTCPeerConnection(pcConfig);
             peerConnections.current[peerID] = new RTCPeerConnection({
@@ -99,7 +100,6 @@ export const RoomProvider = ({ children }:RoomProviderProps) => {
                     addNewClient(peerID, () => {
                         if (peerMediaElements.current[peerID]) {
                             peerMediaElements.current[peerID].srcObject = remoteStream;
-                            console.log(clients);
                         } else {
                             // FIX LONG RENDER IN CASE OF MANY CLIENTS
                             let settled = false;
@@ -117,9 +117,11 @@ export const RoomProvider = ({ children }:RoomProviderProps) => {
                 }
             };
 
-            localMediaStream.current.getTracks().forEach((track:MediaStreamTrack) => {
-                peerConnections.current[peerID].addTrack(track, localMediaStream.current);
-            });
+            if (localMediaStream.current) {
+                localMediaStream.current.getTracks().forEach((track:MediaStreamTrack) => {
+                    peerConnections.current[peerID].addTrack(track, localMediaStream.current);
+                });
+            }
 
             if (createOffer) {
                 const offer = await peerConnections.current[peerID].createOffer();
@@ -196,6 +198,42 @@ export const RoomProvider = ({ children }:RoomProviderProps) => {
         };
     }, []);
 
+    useEffect(() => {
+        if (!localMediaStream.current) return;
+        if (isCamera) {
+            const videoTrack = localMediaStream.current
+                .getTracks()
+                .find((track:MediaStreamTrack) => track.kind === 'video');
+            videoTrack.enabled = true;
+            socket.emit('CameraButton', { camera: isCamera });
+        }
+        if (!isCamera) {
+            const videoTrack = localMediaStream.current
+                .getTracks()
+                .find((track:MediaStreamTrack) => track.kind === 'video');
+            videoTrack.enabled = false;
+            socket.emit('CameraButton', { camera: isCamera });
+        }
+    }, [isCamera]);
+
+    useEffect(() => {
+        if (!localMediaStream.current) return;
+        if (isMicro) {
+            const videoTrack = localMediaStream.current
+                .getTracks()
+                .find((track:MediaStreamTrack) => track.kind === 'audio');
+            videoTrack.enabled = true;
+            socket.emit('MicroButton', { micro: isMicro });
+        }
+        if (!isMicro) {
+            const videoTrack = localMediaStream.current
+                .getTracks()
+                .find((track:MediaStreamTrack) => track.kind === 'audio');
+            videoTrack.enabled = false;
+            socket.emit('MicroButton', { micro: isMicro });
+        }
+    }, [isMicro]);
+
     const provideMediaRef = useCallback((id:string, node:any) => {
         peerMediaElements.current[id] = node;
     }, []);
@@ -205,12 +243,10 @@ export const RoomProvider = ({ children }:RoomProviderProps) => {
             value={{
                 clients,
                 provideMediaRef,
+                users,
             }}
         >
             {children}
-            {/* { */}
-            {/*    JSON.stringify(`${clients}424`) */}
-            {/* } */}
         </RoomContext.Provider>
     );
 };

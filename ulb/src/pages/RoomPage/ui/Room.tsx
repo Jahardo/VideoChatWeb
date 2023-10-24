@@ -18,12 +18,12 @@ const Room = ({ className }:RoomProps) => {
     const [exist, setExist] = useState(true);
     const roomId = useParams();
     const getLocalVideo = getLocalVideoStream();
-    useEffect(() => {
-        socket.emit(ACTIONS.JOIN, {
-            roomId: roomId.id,
-        });
-        console.log(roomId.id);
-    }, []);
+    // useEffect(() => {
+    //     socket.emit(ACTIONS.JOIN, {
+    //         roomId: roomId.id,
+    //     });
+    //     console.log(roomId.id);
+    // }, []);
     const dispatch = useDispatch();
     const joined = useSelector(getJoinValue);
     if (joined) {
