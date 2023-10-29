@@ -58,16 +58,10 @@ io.on('connection', socket => {
                 createOffer: true,
             });
         });
-        // if (!rooms[roomId]) rooms[roomId] = {};
-        // console.log("user joined the room", roomId, userName);
-        // rooms[roomId][socket.id] = { userName ,isMicro,isCamera};
-        // socket.join(roomId);
-        // socket.to(roomId).emit('')
-        // socket.to(roomId).emit("user-joined", { userId:socket.id, userName });
-        // socket.emit("get-users", {
-        //     roomId,
-        //     participants: rooms[roomId],
-        // });
+        Object.values(users).filter(user=>user.userId !==socket.id).forEach(user => {
+            io.to(roomId).emit("user-joined", users[socket.id]);
+        });
+
         socket.join(roomId);
         io.to(roomId).emit('shareUsers',users)
         socket.on('MicroButton',({micro}:{micro:boolean})=>{
@@ -86,6 +80,8 @@ io.on('connection', socket => {
     };
 
     const leaveRoom = ({roomId}: { roomId: string }) => {
+        socket.leave((roomId))
+        socket.to(roomId).emit("user-disconnected", rooms[roomId][socket.id]);
         delete rooms[roomId][socket.id];
         const users = rooms[roomId]
         Object.values(users).forEach(user => {
@@ -97,8 +93,6 @@ io.on('connection', socket => {
                 peerID: user.userId,
             });
         })
-        socket.to(roomId).emit("user-disconnected", socket.id);
-        socket.leave((roomId))
     };
     socket.on('pressJoin', CreateUser)
     socket.on('join-room', joinRoom);

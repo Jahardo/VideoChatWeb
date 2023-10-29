@@ -1,6 +1,5 @@
 import { ButtonsPanel } from 'witgets/ButtonsPanel';
 import Panel from 'pages/RoomPage/ui/Panel';
-import { ACTIONS, socket } from 'shared/lib/socket';
 import { useEffect, useState } from 'react';
 import { PreEnterMenu } from 'shared/ui/PreEnterMenu/ui/PreEnterMenu';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +7,10 @@ import { getJoinValue, joinAction } from 'entities/Join';
 import { useParams } from 'react-router-dom';
 import { getLocalVideoStream } from 'pages/RoomPage/ui/Streams/getLocalVideoStream';
 import { RoomProvider } from 'app/providers/RoomProvider';
+import { NotificationCart } from 'features/NotificationCart';
+import { ClassNames } from 'shared/lib/ClassNames';
 import cls from './Room.module.scss';
+import classNames from '*.scss';
 
 interface RoomProps {
     className?: string
