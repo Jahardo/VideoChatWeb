@@ -1,0 +1,12 @@
+.Input {
+    outline: none;
+}
+
+.smallInput {
+    display: block;
+    height: 40px;
+    margin-top: 6px;
+    outline: none;
+    background-color: var(--inverted-secondary-color);
+    color: var(--light);
+}

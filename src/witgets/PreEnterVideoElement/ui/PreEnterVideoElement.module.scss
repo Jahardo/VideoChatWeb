@@ -1,0 +1,21 @@
+:root {
+    --video-element-height:540px;
+    --video-element-width: 324px;
+}
+
+.PreEnterVideoElement {
+    background: linear-gradient(#e66465, #9198e5);
+    position: relative;
+
+}
+
+
+
+.btnPositions {
+    display: flex;
+    justify-content: normal;
+    position: absolute;
+    transform: scale(2);
+    bottom:5%;
+    left:10%;
+}

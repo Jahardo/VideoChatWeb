@@ -1,0 +1,28 @@
+.Navbar {
+    width: 100%;
+    height: var(--navbar-height);
+    background-color: var(--inverted-bg-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:20px;
+
+}
+
+.links {
+    margin-left: auto;
+}
+
+.mainLink {
+    margin-right: 15px;
+}
+
+.switcher {
+    display: flex;
+    gap:15px;
+    align-items: center;
+}
+
+.Setting {
+    width: 40px;
+}

@@ -1,0 +1,54 @@
+.ToggleSwitcher {
+    position: relative;
+    width: 80px;
+    height: 30px;
+    border-radius: 20px ;
+    cursor: pointer;
+}
+
+label {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+
+    input {
+        position: absolute;
+        display: none;
+    }
+
+}
+
+
+
+.Halo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+input:checked ~ .Halo {
+    background-color: var(--primary-color);
+}
+
+.Halo::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    top:5px;
+    left: 10px;
+    height: 20px;
+    background-color:var(--dark) ;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+
+
+
+input:checked ~ .Halo::before {
+    transform: translateX(40px);
+    background-color: var(--light);
+}

@@ -1,0 +1,39 @@
+.Room {
+    height: calc(100vh - var(--navbar-height) - var(--control-panel-height) );
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+}
+
+.SideScroll {
+    background-color: var(--inverted-bg-color);
+    width: var(--sidebar-width);
+    overflow-y:auto;
+    display: flex;
+    flex-direction: column;
+    gap:5px
+}
+
+.Panel {
+    display: flex;
+}
+
+.mainHeight {
+    height: 100%;
+}
+
+.mainPanel {
+    padding-right: 5px;
+    flex-grow: 1;
+}
+
+.grid {
+    gap:10px;
+    display: grid;
+    max-width: 100vw;
+    grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+    grid-template-rows: repeat(auto-fit,minmax(65px,1fr)) ;
+}
+
+
+
