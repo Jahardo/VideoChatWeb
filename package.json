@@ -13,7 +13,7 @@
     "lint:scss": "npx stylelint \"**/*.scss\"",
     "lint:scss:fix": "npx stylelint \"**/*.scss\" --fix",
     "unit": "jest --config ./config/jest/jest.config.ts",
-    "predeploy": "npm run build:prod",
+    "predeploy": "npm run build:dev",
     "deploy": "gh-pages -d build"
   },
   "author": "",
