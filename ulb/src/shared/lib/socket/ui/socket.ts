@@ -8,3 +8,4 @@ const options:object = {
 };
 
 export const socket = io('https://videochatweb.dimamorshch.repl.co/', options);
+//vdfnvidnvdi
