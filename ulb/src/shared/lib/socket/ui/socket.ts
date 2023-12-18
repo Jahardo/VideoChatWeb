@@ -7,4 +7,4 @@ const options:object = {
     transports: ['websocket'],
 };
 
-export const socket = io('http://localhost:3000', options);
+export const socket = io('https://videochatweb.dimamorshch.repl.co/', options);
