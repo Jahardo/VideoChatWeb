@@ -1,4 +1,4 @@
 import {Db} from "../config/db.js";
-import {UserSchema} from './UserSchema.js'
+import {userSchema} from "./userSchema.js";
 
-export const UserModel = Db.model('User',UserSchema)
+export const userModel = Db.model('Users',userSchema)

@@ -9,13 +9,17 @@ body {
 }
 
 .app {
-    background : var(--bg-color);
     min-height : 100vh;
     min-width: 100vw;
-
+    display: flex;
+    flex-direction: column;
 }
-
+.NavBar__flex{
+    flex: 0 1 auto;
+}
 .content-page {
+    flex: 1 1 auto;
+    height: 100%;
 }
 
 .page-wrapper {

@@ -1,0 +1,2 @@
+import mongoose, {Schema} from "mongoose"
+export const Db =mongoose.createConnection('mongodb+srv://dmorshch9:bfYTM6oa5Svm0kG9@cluster0.tr1j185.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')//bfYTM6oa5Svm0kG9

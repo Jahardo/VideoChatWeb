@@ -41,3 +41,93 @@
     
 }
 
+.v-application {
+    font-family: InterVariable !important;
+}
+.v-application {
+    font-family: Roboto,sans-serif;
+    line-height: 1.5;
+}
+.ttt {
+    --v-anchor-base: #1976d2;
+    --v-primary-base: #1976d2;
+    --v-primary-lighten5: #c7fdff;
+    --v-primary-lighten4: #a8e0ff;
+    --v-primary-lighten3: #8ac5ff;
+    --v-primary-lighten2: #6aaaff;
+    --v-primary-lighten1: #488fef;
+    --v-primary-darken1: #005eb6;
+    --v-primary-darken2: #00479b;
+    --v-primary-darken3: #003180;
+    --v-primary-darken4: #001e67;
+    --v-secondary-base: #424242;
+    --v-secondary-lighten5: #c1c1c1;
+    --v-secondary-lighten4: #a6a6a6;
+    --v-secondary-lighten3: #8b8b8b;
+    --v-secondary-lighten2: #727272;
+    --v-secondary-lighten1: #595959;
+    --v-secondary-darken1: #2c2c2c;
+    --v-secondary-darken2: #171717;
+    --v-secondary-darken3: #000000;
+    --v-secondary-darken4: #000000;
+    --v-accent-base: #82b1ff;
+    --v-accent-lighten5: #ffffff;
+    --v-accent-lighten4: #f8ffff;
+    --v-accent-lighten3: #daffff;
+    --v-accent-lighten2: #bce8ff;
+    --v-accent-lighten1: #9fccff;
+    --v-accent-darken1: #6596e2;
+    --v-accent-darken2: #467dc6;
+    --v-accent-darken3: #2364aa;
+    --v-accent-darken4: #004c90;
+    --v-error-base: #ff5252;
+    --v-error-lighten5: #ffe4d5;
+    --v-error-lighten4: #ffc6b9;
+    --v-error-lighten3: #ffa99e;
+    --v-error-lighten2: #ff8c84;
+    --v-error-lighten1: #ff6f6a;
+    --v-error-darken1: #df323b;
+    --v-error-darken2: #bf0025;
+    --v-error-darken3: #9f0010;
+    --v-error-darken4: #800000;
+    --v-info-base: #2196f3;
+    --v-info-lighten5: #d4ffff;
+    --v-info-lighten4: #b5ffff;
+    --v-info-lighten3: #95e8ff;
+    --v-info-lighten2: #75ccff;
+    --v-info-lighten1: #51b0ff;
+    --v-info-darken1: #007cd6;
+    --v-info-darken2: #0064ba;
+    --v-info-darken3: #004d9f;
+    --v-info-darken4: #003784;
+    --v-success-base: #4caf50;
+    --v-success-lighten5: #dcffd6;
+    --v-success-lighten4: #beffba;
+    --v-success-lighten3: #a2ff9e;
+    --v-success-lighten2: #85e783;
+    --v-success-lighten1: #69cb69;
+    --v-success-darken1: #2d9437;
+    --v-success-darken2: #00791e;
+    --v-success-darken3: #006000;
+    --v-success-darken4: #004700;
+    --v-warning-base: #fb8c00;
+    --v-warning-lighten5: #ffff9e;
+    --v-warning-lighten4: #fffb82;
+    --v-warning-lighten3: #ffdf67;
+    --v-warning-lighten2: #ffc24b;
+    --v-warning-lighten1: #ffa72d;
+    --v-warning-darken1: #db7200;
+    --v-warning-darken2: #bb5900;
+    --v-warning-darken3: #9d4000;
+    --v-warning-darken4: #802700;
+    --v-w3-race-bg-base: #e9e9e9;
+    --v-w3-race-bg-lighten5: #ffffff;
+    --v-w3-race-bg-lighten4: #ffffff;
+    --v-w3-race-bg-lighten3: #ffffff;
+    --v-w3-race-bg-lighten2: #ffffff;
+    --v-w3-race-bg-lighten1: #ffffff;
+    --v-w3-race-bg-darken1: #cdcdcd;
+    --v-w3-race-bg-darken2: #b1b1b1;
+    --v-w3-race-bg-darken3: #979797;
+    --v-w3-race-bg-darken4: #7d7d7d;
+}
