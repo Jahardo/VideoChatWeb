@@ -24,13 +24,19 @@ export const ProfileMenu = ({
             buttonRef.current.classList.add(cls.effectContainer);
         };
         tt();
-        const applyStyles = () => {
+        const applyStyles = (e:MouseEvent) => {
+            const { offsetX, offsetY } = e;
+            const { style } = buttonRef.current;
+            style.setProperty('--effect-duration', `${2.25}s`);
+            style.setProperty('--effect-left', `${offsetX - (buttonRef.current.offsetWidth / 2)}px`);
+            style.setProperty('--effect-top', `${offsetY - (buttonRef.current.offsetHeight / 2)}px`);
+            style.setProperty('--effect-width', `${buttonRef.current.offsetWidth}px`);
+            style.setProperty('--effect-height', `${buttonRef.current.offsetHeight}px`);
         };
-        const buttonClick = () => {
+        const buttonClick = (e:MouseEvent) => {
             buttonRef.current.classList.remove(cls.active);
-            setInterval(() => {
-                buttonRef.current.classList.add(cls.active);
-            }, 1);
+            applyStyles(e);
+            buttonRef.current.classList.add(cls.active);
         };
         buttonRef.current.addEventListener('mouseup', buttonClick);
     }, []);

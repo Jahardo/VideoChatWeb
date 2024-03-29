@@ -2,7 +2,6 @@
   margin-left: 10px;
   position: relative;
   background: var(--bg-color);
-  width: 7rem;
   text-align: center;
 }
 
@@ -11,20 +10,27 @@
   font: var(--font-l);
   text-decoration: none;
 }
+.appLink:hover {
+  background: var(--secondary-hover-color);
+}
 .btn:focus {
-  background: var(--primary-color-opacity);
+  background: var(--primary-hover-color);
 }
 .btn {
-  width: 7rem;
+  width: 100px;
+  height: 40px;
   border: none;
   border-radius: 0;
   position: relative;
   transition:hover .2s ease;
 }
+.btn:hover {
+  background: var(--primary-hover-color);
+}
 .Links__group{
   background: var(--bg-color);
   padding: .6rem;
-  width: 7rem;
+  width: 100px;
   position: absolute;
   border-radius: 2%;
   display: flex;
@@ -51,7 +57,7 @@
   --effect-left:0px;
   --effect-height:10rem;
   --effect-width:10rem;
-  --effect-color: var(--primary-color-opacity);
+  --effect-color: var(--primary-hover-color);
 }
 .effectContainer::before {
   content: "";
