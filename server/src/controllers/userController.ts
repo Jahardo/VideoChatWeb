@@ -53,17 +53,27 @@ export class userController {
         if(!name || !email || !password){
             return next(ApiError.BadRequest('name or email or password is empty'))
         }
-        await isExistWithEmail(email,next)
-        await isExistWithUserName(name,next)
+        let candidate =  await userModel.findOne({name})
+        if(candidate){
+            return next(ApiError.BadRequest(`user with name - ${name} already exist`))
+        }
+        candidate =  await userModel.findOne({email})
+        if(candidate){
+            return next(ApiError.BadRequest(`user with email - ${email} already exist`))
+        }
         const hashPassword =  await bcrypt.hash(password,4)
         const user= new userModel({name,email,password:hashPassword})
-        await user.save();
+        try {
+            await user.save()
+        }catch (e:any){
+            return next(ApiError.BadRequest(`${e.name}  ${e.message}`));
+        }
         const token = generateJwt(user.name,user.email)
         return res.json({ token ,reqBody:req.body,ps:hashPassword});
     }
     async login(req:Request, res:Response,next:NextFunction){
-      const {name,email,password} = req.body;
-      const user = await userModel.findOne({name,email});
+      const {email,password} = req.body;
+      const user = await userModel.findOne({email});
       if(! user){
         return next(ApiError.Internal('userName or email not exist'))
       }
@@ -72,7 +82,7 @@ export class userController {
         return next(ApiError.Internal('password is wrong'))
       }
       const token = generateJwt(user.name,user.email)
-      return res.json({token})
+      return res.json({token:token})
     }
     async changeImg(req:Request ,res:Response,next:NextFunction){
         //& {files: MulterFile[]}

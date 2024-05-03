@@ -6,7 +6,7 @@ export const userRouter =Router();
 const controller = new userController()
 userRouter.post('/login',controller.login)
 userRouter.get('/auth',authMiddleware,controller.check)
-userRouter.post('/register',controller.registration)
+userRouter.post('/registration',controller.registration)
 userRouter.get('/test',controller.test)
 userRouter.post('/changeImg',controller.changeImg)
 //userRouter.get('/:id')

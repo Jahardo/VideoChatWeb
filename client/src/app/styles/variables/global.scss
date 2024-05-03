@@ -38,7 +38,14 @@
     --dark: #28292c;
     --button-disabled-color: #e66465;
 
-    
+    //white
+    --white-color: hsl(0, 0%, 100%);
+    //black
+    --black-color: hsl(0, 0%, 0%);
+    // gray color
+    --gray-color: hsla(0, 2%, 66%, 0.2);
+    //red color
+    --red-error-color : rgba(169, 53, 53, 0.69);
 }
 
 .v-application {

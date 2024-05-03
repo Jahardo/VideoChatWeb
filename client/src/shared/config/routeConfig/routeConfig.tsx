@@ -4,20 +4,24 @@ import React from 'react';
 import { AboutPage } from 'pages/AboutPage';
 import { NotFoundPage } from 'pages/NotFoundPage';
 import { RoomPage } from 'pages/RoomPage';
+import { AuthPage } from 'pages/AuthPage';
 
 export enum AppRoutes {
     MAIN='main',
     ABOUT = 'about',
     NOT_FOUND = 'not_found',
-    ROOM = 'room'
+    ROOM = 'room',
+    LOGIN = 'login',
+    REGISTRATION = 'registration',
 }
 
 export const RouterPath:Record<AppRoutes, string> = {
     [AppRoutes.MAIN]: '/',
     [AppRoutes.ABOUT]: '/about',
     [AppRoutes.ROOM]: '/room/:id',
+    [AppRoutes.LOGIN]: '/login',
+    [AppRoutes.REGISTRATION]: '/registration',
     [AppRoutes.NOT_FOUND]: '*',
-
 };
 
 export const routeConfig: Record<AppRoutes, RouteProps> = {
@@ -39,5 +43,13 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
     [AppRoutes.ROOM]: {
         path: RouterPath.room,
         element: <RoomPage />,
+    },
+    [AppRoutes.LOGIN]: {
+        path: RouterPath.login,
+        element: <AuthPage />,
+    },
+    [AppRoutes.REGISTRATION]: {
+        path: RouterPath.registration,
+        element: <AuthPage />,
     },
 };

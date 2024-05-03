@@ -6,7 +6,7 @@ const initialState:VideoSettingsSchema = {
     isCamera: true,
 };
 export const VideoSettingsSlice = createSlice({
-    name: 'counter',
+    name: 'videoSettings',
     initialState,
     reducers: {
         turnMicro: (state) => {
