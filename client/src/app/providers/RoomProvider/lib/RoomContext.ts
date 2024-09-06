@@ -16,6 +16,7 @@ export const pcConfig = {
 export type UserType = {
     roomId: string
     userId: string;
+    img:string,
     userName: string;
     isMicro:boolean,
     isCamera:boolean,

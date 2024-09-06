@@ -9,13 +9,16 @@ import { socket } from 'shared/lib/socket';
 import { useParams } from 'react-router-dom';
 import { RoomContext } from 'app/providers/RoomProvider';
 import { GlobalVideo } from 'pages/RoomPage/ui/Streams/GlobalVideo';
+import { useDispatch } from 'react-redux';
+import { joinAction } from 'entities/Join';
+import { client } from 'features/http/ui/AxiosProvider';
 
 interface PanelProps {
     className?: string
 }
 
 const Panel = ({ className }:PanelProps) => {
-    const { clients, provideMediaRef } = useContext(RoomContext);
+    const { clients, users, provideMediaRef } = useContext(RoomContext);
     const [isMain, setIsMain] = useState(false);
     const mainClient = 1;
     if (isMain) {
@@ -46,7 +49,7 @@ const Panel = ({ className }:PanelProps) => {
                         client={client}
                         key={client}
                     />
-                    {/* <video ref={(instance) => provideMediaRef(client, instance)} autoPlay muted={client === 'LOCAL_VIDEO'} /> */}
+                    {/* <video ref={(instance) => provideMediaRef(client, instance)} autoPlay muted /> */}
                 </div>
             ))}
         </div>

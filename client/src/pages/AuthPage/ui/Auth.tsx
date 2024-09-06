@@ -11,7 +11,11 @@ import MailLine from 'shared/assets/icons/MailLine.svg';
 import { AppLink } from 'shared/ui/AppLink/AppLink';
 import { useLocation, useParams } from 'react-router-dom';
 import { RouterPath } from 'shared/config/routeConfig/routeConfig';
-import { login, registration } from 'features/http';
+import {
+    checkAuth, login, registration, UserData,
+} from 'features/http';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser, getUserValue, UserActions } from 'entities/User';
 import { PasswordRequirements } from './PasswordRequirements';
 import cls from './Auth.module.scss';
 import { emailValidation } from './AuthValidation';
@@ -22,6 +26,7 @@ interface AuthProps {
 const Auth = ({ className }:AuthProps) => {
     const location = useLocation();
     const isLogin = location.pathname === RouterPath.login;
+    const dispatch = useDispatch();
     const { t } = useTranslation('auth');
     const [eye, setEye] = useState<boolean>(false);
     const [email, setEmail] = useState<string>('');
@@ -31,6 +36,7 @@ const Auth = ({ className }:AuthProps) => {
     const PasRef = useRef<any>(null);
     const LoginBoxRef = useRef<any>(null);
     const [loginErrors, setLoginErrors] = useState([]);
+    const user = useSelector(getUser);
     const changeEye = () => {
         setEye((prevState) => !prevState);
     };
@@ -60,14 +66,21 @@ const Auth = ({ className }:AuthProps) => {
                     data = await login({ email, password });
                     if (typeof data === 'string') {
                         setLoginErrors((prevState) => [...prevState, data]);
-                    }else  {
-
+                    } else {
+                        dispatch(UserActions.loginUser({
+                            id: data.id, email: data.email, name: data.name, img: data.img,
+                        }));
+                        console.log(user);
                     }
                 }
                 if (!isLogin) {
                     data = await registration({ name: Name, email, password });
                     if (data) {
                         setLoginErrors((prevState) => [...prevState, data]);
+                    } else {
+                        dispatch(UserActions.loginUser({
+                            id: data.id, email: data.email, name: data.name, img: data.img,
+                        }));
                     }
                 }
             } catch (e) {

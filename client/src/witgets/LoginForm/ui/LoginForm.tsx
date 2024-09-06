@@ -9,6 +9,7 @@ import { getJoinValue, joinAction } from 'entities/Join';
 import { socket } from 'shared/lib/socket';
 import { useState } from 'react';
 import { getCameraValue, getMicroValue } from 'entities/VideoSettings';
+import { getAuthValue, getUser, getUserValue } from 'entities/User';
 import cls from './LoginForm.module.scss';
 
 interface LoginFormProps {
@@ -18,47 +19,67 @@ export const LoginForm = ({ className }:LoginFormProps) => {
     const { t } = useTranslation('main');
     const [name, setName] = useState<string>('');
     const [empty, setEmpty] = useState(false);
-    const navigate = useNavigate();
+    const isLogin = useSelector(getAuthValue);
+    const user = useSelector(getUserValue);
     const dispatch = useDispatch();
     const isMicro = useSelector(getMicroValue);
     const isCamera = useSelector(getCameraValue);
     const roomId = useParams();
     const joinRoom = () => {
-        if (name === '') {
+        if (!isLogin && name === '') {
             setEmpty(true);
             return;
         }
         setEmpty(false);
         dispatch(joinAction.change());
-        socket.emit('pressJoin', {
-            roomId: roomId.id,
-            userName: name,
-            isMicro,
-            isCamera,
-        });
+        if (!isLogin) {
+            socket.emit('pressJoin', {
+                roomId: roomId.id,
+                userName: name,
+                img: 'default.jpg',
+                isMicro,
+                isCamera,
+            });
+        } else {
+            socket.emit('pressJoin', {
+                roomId: roomId.id,
+                userName: user.name,
+                img: user.img,
+                isMicro,
+                isCamera,
+            });
+        }
     };
 
     return (
         <div className={ClassNames(cls.LoginForm, {}, [className])}>
             <h1>{t('Welcome to Video chat web')}</h1>
             <div className={cls.wrap}>
-                <span>{t('Write here your Name')}</span>
-                <Input
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    type="text"
-                    placeholder="Name"
-                    autoComplete="off"
-                    theme={InputTheme.SMALL}
-                    className={ClassNames('', { [cls.InputError]: empty }, [])}
-                />
+                {isLogin
+                    ? <div />
+                    : (
+                        <div>
+                            <span>{t('Write here your Name')}</span>
+                            <Input
+                                value={name}
+                                onChange={(event) => setName(event.target.value)}
+                                type="text"
+                                placeholder="Name"
+                                autoComplete="off"
+                                theme={InputTheme.SMALL}
+                                className={ClassNames(cls.loginform__input, { [cls.InputError]: empty }, [])}
+                            />
+                        </div>
+                    )}
                 <div className={cls.createOrJoin}>
                     <Button
                         onClick={joinRoom}
                         theme={ThemeButton.SUBMIT}
                         className={cls.btnAdditional}
                     >
-                        {t('Join')}
+                        {isLogin
+                            ? t('Join')
+                            : t('Join as guest')}
                     </Button>
                 </div>
             </div>

@@ -1,6 +1,25 @@
 .Main {
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
+.new_room_button:focus {
+  background: var(--primary-hover-color);
+}
+.new_room_button{
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--bg-color);
+  font-weight: var(--font-size-l);
+  color:var(--secondary-color);
+  transition:hover .2s ease;
+  position: relative;
+}
+.new_room_button:hover {
+  background-color: var(--primary-hover-color);
+}
 
 

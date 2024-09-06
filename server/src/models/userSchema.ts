@@ -15,5 +15,5 @@ export const userSchema = new Schema({
     createdAt:{
         type:Date,default:Date.now
     },
-    img: {type:String,requred:true,default:"default.jpg"}
+    img: {type:String,required:true,default:"default.jpg"}
 })

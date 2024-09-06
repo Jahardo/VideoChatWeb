@@ -10,7 +10,7 @@ import { Request as ExpressRequest } from "express";
 import { UploadedFile } from "express-fileupload";
 
 interface CustomRequest extends ExpressRequest {
-    user?: { name: string, email: string }; 
+    user?: { name: string, email: string,id:string , img:string };
 }
 
 export interface MulterFile {
@@ -21,10 +21,10 @@ export interface MulterFile {
     size: number
   }
 
-const generateJwt = (name:string,email:string)=> {
+const generateJwt = (name:string,email:string,id:string,img:string)=> {
     const key = process.env.SECRET_KEY || "testKey"
     return  jwt.sign(
-        {name,email},
+        {name,email,id,img},
         key,
         //process.env.SECRET_KEY,
         {expiresIn:'24h'})
@@ -68,8 +68,8 @@ export class userController {
         }catch (e:any){
             return next(ApiError.BadRequest(`${e.name}  ${e.message}`));
         }
-        const token = generateJwt(user.name,user.email)
-        return res.json({ token ,reqBody:req.body,ps:hashPassword});
+        const token = generateJwt(user.name,user.email,user.id,user.img)
+        return res.json({ token,});
     }
     async login(req:Request, res:Response,next:NextFunction){
       const {email,password} = req.body;
@@ -81,11 +81,14 @@ export class userController {
       if(!comparePassword){
         return next(ApiError.Internal('password is wrong'))
       }
-      const token = generateJwt(user.name,user.email)
+      const token = generateJwt(user.name,user.email,user.id,user.img);
       return res.json({token:token})
     }
     async changeImg(req:Request ,res:Response,next:NextFunction){
-        //& {files: MulterFile[]}
+        if(!req.headers.authorization){
+            return next(ApiError.BadRequest('you have to auth to change img'));
+        }
+        const data = jwt.decode(req.headers.authorization.split(' ')[1]);
         const files= req.files;
         if(!files){
             return next(ApiError.BadRequest('File dont exist'))
@@ -93,16 +96,30 @@ export class userController {
         let fileName = v4()+ '.jpg';
         const img = files['img'] as UploadedFile;
         img.mv(path.resolve('static',fileName));
-        return res.json({ms:'gggg'})
-    }
+        if(!data){
+            return next(ApiError.BadRequest('data do no exits'));
+        }
+        // @ts-ignore
+        const user = await userModel.findById(data.id);
+        if(!user){
+            return next(ApiError.Internal('user do not exist'));
+        }
+        user.img = fileName;
+        user.save();
+        const ts = await userModel.findById(user.id);
+        if (!ts) {
+            return next();
+        }
+        const token = generateJwt(user.name,user.email,user.id,user.img)
+        return res.json({token});    }
     async check(req:CustomRequest,res:Response,next:NextFunction){
-      const token = generateJwt(req.user?.name|| "",req.user?.email || "")
+      const token = generateJwt(req.user?.name|| "",req.user?.email || "",req.user?.id || "",req.user?.img || "");
       return res.json({token})
     }
     async test(req:Request,res:Response){
         console.log(req.query)
         console.log(req.body)
-        const token = generateJwt('adsds','fddce')
+        const token = generateJwt('adsds','fddce','sfwfw','default.jpg')
         return res.json({ token });
     }
 }

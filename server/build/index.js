@@ -4,6 +4,7 @@ import http from "http";
 import 'dotenv/config';
 import { AppConfig } from "./config/appConfig.js";
 import { Routes } from "./routes/index.js";
+import { Socket } from './socket/index.js';
 class BackEndServer {
     app;
     http;
@@ -18,6 +19,7 @@ class BackEndServer {
     }
     includeRoutes() {
         new Routes(this.app).appRoutes();
+        new Socket(this.socket).socketEvents();
     }
     appExecute() {
         this.appConfig();

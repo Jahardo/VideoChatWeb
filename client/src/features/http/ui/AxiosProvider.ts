@@ -8,6 +8,8 @@ export const client = axios.create({
 export const authClient = axios.create({
     baseURL: 'http://localhost:3003',
 });
+
+export const urlOfStaticFiles = 'http://localhost:3003/static/';
 const authInterceptor = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     config.headers.authorization = `Bearer ${localStorage.getItem('token')}`;
     return config;
@@ -20,7 +22,9 @@ const authError = (e:AxiosError) => {
 authClient.interceptors.request.use(authInterceptor, authError);
 
 export interface UserData {
+    id?:string,
     name?:string,
-    password: string,
     email : string
+    password?:string,
+    img?:string,
 }

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { joinSchema } from '../types/joinSchema';
 
 const initialState: joinSchema = {
@@ -10,6 +10,9 @@ export const joinSlice = createSlice({
     reducers: {
         change: (state) => {
             state.value = !state.value;
+        },
+        set: (state, action:PayloadAction<boolean>) => {
+            state.value = action.payload;
         },
     },
 });

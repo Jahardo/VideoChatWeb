@@ -7,6 +7,7 @@ import { RoomContext } from 'app/providers/RoomProvider';
 import { socket } from 'shared/lib/socket';
 import MicrophoneOn from 'shared/assets/icons/MicrophoneOn.svg';
 import MicrophoneOff from 'shared/assets/icons/MicrophoneOff.svg';
+import { urlOfStaticFiles } from 'features/http';
 import cls from './VideoCart.module.scss';
 
 interface VideoCartProps extends VideoHTMLAttributes<HTMLVideoElement> {
@@ -19,21 +20,25 @@ export const VideoCart = ({
 }: VideoCartProps) => {
     const { t } = useTranslation('room');
     const { provideMediaRef, users } = useContext(RoomContext);
+    if (!users[client]) {
+        return (
+            <div />
+        );
+    }
     return (
         <div className={ClassNames(cls.VideoCart, {}, [className])}>
             <video
-                className={ClassNames('', { [cls.HideVideo]: !users[client]?.isCamera }, [])}
                 ref={(instance) => provideMediaRef(client, instance)}
+                //className={ClassNames('', { /*[cls.HideVideo]: !users[client]?.isCamera*/ }, [])}
                 width="100%"
                 height="100%"
                 autoPlay
                 playsInline
-                muted={!users[client].isMicro}
+                muted={!users[client]?.isMicro || false}
             />
             <img
                 className={ClassNames(cls.img, { [cls.HideVideo]: users[client]?.isCamera }, [])}
-                /* eslint-disable-next-line max-len */
-                src="https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1571324860479-8VDUGJTYKN5D2YXW7ZC5/image-asset.jpeg"
+                src={urlOfStaticFiles + users[client].img}
             />
             <div className={cls.microIcon}>
                 {users[client]?.isMicro
@@ -42,11 +47,11 @@ export const VideoCart = ({
 
             </div>
             <div className={cls.name}>
-                {
-                    JSON.stringify(users[client]?.isCamera)
-                }
-                {t('User Name')}
-                {' '}
+                {/* { */}
+                {/*    JSON.stringify(users[client]?.isCamera) */}
+                {/* } */}
+                {/* {t('User Name')} */}
+                {/* {' '} */}
                 {client === socket.id
                     ? (
                         <div>

@@ -5,7 +5,7 @@ import { useStateCallback } from 'pages/RoomPage/ui/hooks/useStateCallback';
 import { useParams } from 'react-router-dom';
 import { socket } from 'shared/lib/socket';
 import * as freeice from 'freeice';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCameraValue, getMicroValue } from 'entities/VideoSettings';
 import { pcConfig, RoomContext, UserType } from '../lib/RoomContext';
 
@@ -203,15 +203,15 @@ export const RoomProvider = ({ children }:RoomProviderProps) => {
         if (isCamera) {
             const videoTrack = localMediaStream.current
                 .getTracks()
-                .find((track:MediaStreamTrack) => track.kind === 'video');
-            videoTrack.enabled = true;
+                .filter((track:MediaStreamTrack) => track.kind === 'video')
+                .forEach((track:MediaStreamTrack) => track.enabled = true);
             socket.emit('CameraButton', { camera: isCamera });
         }
         if (!isCamera) {
             const videoTrack = localMediaStream.current
                 .getTracks()
-                .find((track:MediaStreamTrack) => track.kind === 'video');
-            videoTrack.enabled = false;
+                .filter((track:MediaStreamTrack) => track.kind === 'video')
+                .forEach((track:MediaStreamTrack) => track.enabled = false);
             socket.emit('CameraButton', { camera: isCamera });
         }
     }, [isCamera]);
@@ -221,21 +221,23 @@ export const RoomProvider = ({ children }:RoomProviderProps) => {
         if (isMicro) {
             const videoTrack = localMediaStream.current
                 .getTracks()
-                .find((track:MediaStreamTrack) => track.kind === 'audio');
-            videoTrack.enabled = true;
+                .filter((track:MediaStreamTrack) => track.kind === 'audio')
+                .forEach((track:MediaStreamTrack) => track.enabled = true);
             socket.emit('MicroButton', { micro: isMicro });
         }
         if (!isMicro) {
             const videoTrack = localMediaStream.current
                 .getTracks()
-                .find((track:MediaStreamTrack) => track.kind === 'audio');
-            videoTrack.enabled = false;
+                .filter((track:MediaStreamTrack) => track.kind === 'audio')
+                .forEach((track:MediaStreamTrack) => track.enabled = false);
             socket.emit('MicroButton', { micro: isMicro });
         }
     }, [isMicro]);
 
     const provideMediaRef = useCallback((id:string, node:any) => {
         peerMediaElements.current[id] = node;
+        console.log(node);
+        console.log(id);
     }, []);
 
     return (

@@ -24,7 +24,7 @@
 }
 
 .img {
-    position: relative;
+    position: absolute;
     border-radius: 50%;
     object-fit: cover;
     height: var(--avatar-size);
@@ -46,10 +46,11 @@
 }
 
 .HideVideo {
-    display: none;
+    opacity: 0;
 }
 
 .video {
+    position: absolute;
     width: 98%;
     height: 98%;
 }

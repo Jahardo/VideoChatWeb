@@ -3,6 +3,7 @@ import {Server} from 'socket.io'
 interface IUser {
     roomId: string
     userName: string;
+    img:string
     userId: string
     isMicro:boolean,
     isCamera:boolean,
@@ -24,11 +25,11 @@ export class Socket{
         this.io.on('connection', (socket) => {
             console.log(`connected socket ${socket.id}`);
 
-            const createUser = ({ roomId, userName }: IUser) => {
+            const createUser = ({ roomId, userName ,img }: IUser) => {
                 if (!this.rooms[roomId]) {
                     this.rooms[roomId] = {};
                 }
-                this.rooms[roomId][socket.id] = { userName, roomId, userId: socket.id, isMicro: true, isCamera: true };
+                this.rooms[roomId][socket.id] = {img,userName, roomId, userId: socket.id, isMicro: true, isCamera: true };
                 console.log(this.rooms);
             };
 
@@ -47,6 +48,7 @@ export class Socket{
                         createOffer: true,
                     });
                 });
+                console.log(users);
                 Object.values(users).filter(user => user.userId !== socket.id).forEach(user => {
                     this.io.to(roomId).emit("user-joined", this.rooms[socket.id]);
                 });
@@ -70,6 +72,7 @@ export class Socket{
 
             const leaveRoom = ({ roomId }: { roomId: string }) => {
                 socket.leave(roomId);
+                //socket.disconnect();
                 this.io.to(roomId).emit("user-disconnected", this.rooms[roomId][socket.id]);
                 delete this.rooms[roomId][socket.id];
                 const users = this.rooms[roomId];

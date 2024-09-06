@@ -6,6 +6,8 @@ import { AppLink } from 'shared/ui/AppLink/AppLink';
 import { useTranslation } from 'react-i18next';
 import { Button, ThemeButton } from 'shared/ui/Button';
 import { ClickingAnimation } from 'shared/ui/ClickingAnimation';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthValue, getUser, UserActions } from 'entities/User';
 import cls from './ProfileMenu.module.scss';
 
 interface ProfileMenuPros {
@@ -20,6 +22,11 @@ export const ProfileMenu = ({
     const { t } = useTranslation();
     const buttonRef = useRef<any>(null);
     const [click, setClick] = useState<boolean>(false);
+    const isLogin = useSelector(getAuthValue);
+    const dispatch = useDispatch();
+    const logOut = () => {
+        dispatch(UserActions.logoutUser());
+    };
 
     return (
         <div
@@ -35,22 +42,31 @@ export const ProfileMenu = ({
                     {t('Profile')}
                 </Button>
             </ClickingAnimation>
-            <div
-                className={ClassNames(cls.Links__group, {}, [opened ? cls[''] : cls.Links__display])}
-            >
-                <AppLink to="/about" className={cls.appLink}>
-                    {t('Log in')}
-                </AppLink>
-                <AppLink to="/" className={cls.appLink}>
-                    {t('Log in')}
-                </AppLink>
-                <AppLink to="/" className={cls.appLink}>
-                    {t('Log in')}
-                </AppLink>
-                <AppLink to="/" className={cls.appLink}>
-                    {t('Log in')}
-                </AppLink>
-            </div>
+            {isLogin
+                ? (
+                    <div
+                        className={ClassNames(cls.Links__group, {}, [opened ? cls[''] : cls.Links__display])}
+                    >
+                        <AppLink to="/edit" className={cls.appLink}>
+                            {t('Edit')}
+                        </AppLink>
+                        <AppLink to="/" className={cls.appLink} onClick={logOut}>
+                            {t('Log out')}
+                        </AppLink>
+                    </div>
+                )
+                : (
+                    <div
+                        className={ClassNames(cls.Links__group, {}, [opened ? cls[''] : cls.Links__display])}
+                    >
+                        <AppLink to="/login" className={cls.appLink}>
+                            {t('Log in')}
+                        </AppLink>
+                        <AppLink to="/registration" className={cls.appLink}>
+                            {t('Register')}
+                        </AppLink>
+                    </div>
+                )}
 
         </div>
     );

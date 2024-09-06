@@ -9,6 +9,7 @@ import { getLocalVideoStream } from 'pages/RoomPage/ui/Streams/getLocalVideoStre
 import { RoomProvider } from 'app/providers/RoomProvider';
 import { NotificationCart } from 'features/NotificationCart';
 import { ClassNames } from 'shared/lib/ClassNames';
+import { useTranslation } from 'react-i18next';
 import cls from './Room.module.scss';
 import classNames from '*.scss';
 
@@ -16,6 +17,7 @@ interface RoomProps {
     className?: string
 }
 const Room = ({ className }:RoomProps) => {
+    const { t } = useTranslation('room');
     const [rooms, updateRooms] = useState([]);
     const [exist, setExist] = useState(true);
     const roomId = useParams();
@@ -28,6 +30,9 @@ const Room = ({ className }:RoomProps) => {
     // }, []);
     const dispatch = useDispatch();
     const joined = useSelector(getJoinValue);
+    useEffect(() => () => {
+        dispatch(joinAction.set(false));
+    }, []);
     if (joined) {
         return (
             <div className={cls.Room}>
@@ -42,7 +47,7 @@ const Room = ({ className }:RoomProps) => {
         <div>
             {exist
                 ? <PreEnterMenu />
-                : <h1>Room don't exist</h1>}
+                : <h1>{t('Room don\'t exist')}</h1>}
         </div>
     );
 };
